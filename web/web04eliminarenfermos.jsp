@@ -9,7 +9,7 @@
                  Si pulsamos sobre un botón eliminar, borramos al enfermo.
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="beantablaenfermos" class="beans.Bean04EliminarEnfermos" scope="request"/>
+<jsp:useBean id="tablaenfermos" class="beans.Bean04EliminarEnfermos" scope="request"/>
 
 <!DOCTYPE html>
 <html>
@@ -28,9 +28,9 @@
         <%  String dato = request.getParameter("cajains");
             if (dato != null) {
                 int ins = Integer.parseInt(dato);
-                beantablaenfermos.eliminarEnfermo(ins);
+                tablaenfermos.eliminarEnfermo(ins);
             }
         %>
-        <%=beantablaenfermos.getTablaEnfermo()%>
+        <%=tablaenfermos.getTablaEnfermo()%>
     </body>
 </html>

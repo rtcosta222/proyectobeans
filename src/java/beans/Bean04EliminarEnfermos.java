@@ -34,7 +34,6 @@ public class Bean04EliminarEnfermos {
         ResultSet z_rs = z_st.executeQuery(z_sql);
         String html = "<table border='1'>";
         html += "<tr><th>Apellido</th><th>Oficio</th><th>Salario</th></tr>";
-
         while (z_rs.next()) {
             html += "<tr>";
             html += "<td>" + z_rs.getString("APELLIDO") + "</td>";
@@ -42,7 +41,6 @@ public class Bean04EliminarEnfermos {
             html += "<td>" + z_rs.getString("INSCRIPCION") + "</td>";
             html += "</tr>";
         }
-        
         html +="</table>";
         z_rs.close();
         z_conn.close();
@@ -51,7 +49,7 @@ public class Bean04EliminarEnfermos {
     // Método 03
     public void eliminarEnfermo (int ins) throws SQLException {
         Connection z_conn = this.getConnection();
-        String z_sql = "delete enfermo where inscripcion = ?";
+        String z_sql = "delete from enfermo where inscripcion = ?";
         PreparedStatement z_pst = z_conn.prepareStatement(z_sql);
         z_pst.setInt(1, ins);
         z_pst.executeUpdate();

@@ -28,7 +28,7 @@ public class Bean04EliminarEnfermosRepaso {
     
     public void borrarEnfermo(int insc) throws SQLException {
         Connection z_conn = this.getConnection();
-        String z_sql = "delete enfermo where inscripcion = ?";
+        String z_sql = "delete from enfermo where inscripcion = ?";
         PreparedStatement z_pst = z_conn.prepareStatement(z_sql);
         z_pst.setInt(1, insc);
         z_pst.executeUpdate();
