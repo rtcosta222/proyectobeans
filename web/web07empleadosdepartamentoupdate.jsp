@@ -24,9 +24,9 @@
     <body>
         <h1>Update salario emp</h1>
         <form method="post">
-            <label>Elija Dept. </label>
-            <select name="deptno"><%=bean05.getDepts()%></select>
-            <label>Incremento salarial:</label>
+            <label>Elija Dept.: </label>
+            <select name="deptno"><%=bean05.getDepts()%></select><br/>
+            <label>Incremento salarial: </label>
             <input type="number" name="incremento" required>
             <button type="submit">Incrementar salarios</button>
         </form>

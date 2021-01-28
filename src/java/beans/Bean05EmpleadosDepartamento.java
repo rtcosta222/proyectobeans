@@ -19,7 +19,7 @@ import oracle.jdbc.OracleDriver;
  */
 public class Bean05EmpleadosDepartamento {
     
-    public Connection getConnection() throws SQLException {
+    private Connection getConnection() throws SQLException {
         DriverManager.registerDriver(new OracleDriver());
         String z_path = "jdbc:oracle:thin:@localhost:1521:xe";
         Connection z_conn = DriverManager.getConnection(z_path, "system", "oracle");
@@ -31,6 +31,8 @@ public class Bean05EmpleadosDepartamento {
         String z_sql = "select * from dept";
         Statement z_st = z_conn.createStatement();
         ResultSet z_rs = z_st.executeQuery(z_sql);
+        
+        // TODO: Falta mantener el valor pulsado. Pasarlo como parámetro
         String html = "";
         while(z_rs.next()) {
             String z_ui_deptnombre = z_rs.getString("DNOMBRE");
