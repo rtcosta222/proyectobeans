@@ -13,7 +13,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="controller03departamentos" class="controllers.Controller01Departamentos" scope="request"/>
+<jsp:useBean id="controllerdepartamentos" class="controllers.Controller01Departamentos" scope="request"/>
 
 <!DOCTYPE html>
 <html>
@@ -31,8 +31,8 @@
         
     <%  String dato = request.getParameter("cajadept");
         if (dato != null) {
-            int z_deptno = Integer.parseInt(dato);
-            controller03departamentos.eliminarDepartamento(z_deptno);
+            int z_deptno = Integer.parseInt(dato); 
+            controllerdepartamentos.eliminarDepartamento(z_deptno);
         }
     %>
         <table border="1">
@@ -40,7 +40,7 @@
                 <tr><td>DEPT_NO</td><td>DEPT_NOMBRE</td><td>LOCALIDAD</td></tr>
             </theader>
             <tbody>
-                <%=controller03departamentos.getTablaDepartamentos()%>
+                <%=controllerdepartamentos.getTablaDepartamentos()%>
             </tbody>
         </table>
     </body>

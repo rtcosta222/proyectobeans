@@ -16,16 +16,21 @@ import repositories.Repository01Departamentos;
  */
 public class Controller01Departamentos {
     // Atributos
+    // The next instruction is equivalent to:
+    //  <jsp:useBean id="repo" class="Repository01Departamentos" .../>
+    //  It is an object "repo" of class "Repository01Departamentos"
     Repository01Departamentos repo;
     
-    // Constructor
+    // Métodos
+    //  Constructor
     public Controller01Departamentos() {
         this.repo = new Repository01Departamentos();
     }
     
-    // Métodos
     public String getTablaDepartamentos() throws SQLException {
-        ArrayList<Departamento> lista = repo.getDepartamentos();
+        // Query the Repository
+        ArrayList<Departamento> lista = this.repo.getDepartamentos();
+        // Process response
         String html = "";
         for (Departamento d: lista) {
             html += "<tr>";
@@ -37,8 +42,26 @@ public class Controller01Departamentos {
         return html;
     }
 
-    public String getSelectDepartamentos() throws SQLException {
+    public String getTablaEdicionDepartamentos() throws SQLException {
+        // Query the Repository
+        ArrayList<Departamento> lista = this.repo.getDepartamentos();
+        // Process response
+        String html = "";
+        for (Departamento d: lista) {
+            html += "<tr>";
+            html += "<td>" + d.getNumero() + "</td>";
+            html += "<td>" + d.getNombre() + "</td>";
+            html += "<td>" + d.getLocalidad() + "</td>";
+            html += "<td><button type='button'>Editar</button></td>";
+            html += "</tr>";
+        }
+        return html;
+    }
+        
+        public String getSelectDepartamentos() throws SQLException {
+        // Query the Repository
         ArrayList<Departamento> lista = repo.getDepartamentos();
+        // Process response
         String html = "";
         for (Departamento d: lista) {
             html += "<option value='" + d.getNumero() + "'>";
@@ -48,14 +71,42 @@ public class Controller01Departamentos {
     }
     
     public String getDetallesDepartamento(int deptno) throws SQLException {
+        // Query the Repository
         Departamento dept = repo.buscarDepartamento(deptno);
+        // Process response
         String html = "<h1>Número: " + dept.getNumero() + "<h1>";
         html += "<h1>Nombre: " + dept.getNombre() + "<h1>";
         html += "<h1>Localidad: " + dept.getLocalidad() + "<h1>";       
         return html;
     }
     
+    public String getFormDetallesDepartamento (int deptno) throws SQLException {
+        Departamento dept = repo.buscarDepartamento(deptno);
+        String html = "<label>Dept no.: </label>";
+        html += "<input type='number' name='cjdeptnum' value='" + dept.getNumero() + "'readonly/><br/>";
+        html += "<label>Nombre del dept: </label>";
+        html += "<input type='text' name='cajadeptnom' value='" + dept.getNombre() + "'required/><br/>";
+        html += "<label>Localidad del dept: </label>";
+        html += "<input type='text' name='cajadeptloc' value='" + dept.getLocalidad() + "'required/><br/>";
+        return html;
+    }
+    
     public void eliminarDepartamento(int deptno) throws SQLException {
+        // Query the Repository
         repo.eliminarDept(deptno);
+        // Nothing to return to the View
+    }
+    
+    public void insertarDepartamento(int deptnum, String deptnom, String deptloc) throws SQLException {
+        // Query the Repository
+        repo.insertarDept(deptnum, deptnom, deptloc);
+        // Nothing to return to the View
+    }
+    
+    public void modificarDepartamento (int deptnum, String deptnom, String deptloc) throws SQLException {
+        // Query the Repository
+        repo.modificarDept(deptnum, deptnom, deptloc);
+        // Nothing to return to the View
+    
     }
 }
