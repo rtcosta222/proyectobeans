@@ -52,7 +52,7 @@ public class Controller01Departamentos {
             html += "<td>" + d.getNumero() + "</td>";
             html += "<td>" + d.getNombre() + "</td>";
             html += "<td>" + d.getLocalidad() + "</td>";
-            html += "<td><button type='button'>Editar</button></td>";
+            html += "<td><button type='button' name='boton-edicion'>Editar</button></td>";
             html += "</tr>";
         }
         return html;
@@ -108,5 +108,23 @@ public class Controller01Departamentos {
         repo.modificarDept(deptnum, deptnom, deptloc);
         // Nothing to return to the View
     
+    }
+    
+    public String getTablaEliminarDepartamento() throws SQLException {
+        // Query the Repository
+        ArrayList<Departamento> listadepts = this.repo.getDepartamentos();
+        // Process response
+        String html = "";
+        for (Departamento dept: listadepts) {
+            html += "<tr>";
+            html += "<td>" + dept.getNumero() + "</td>";
+            html += "<td>" + dept.getNombre() + "</td>";
+            html += "<td>" + dept.getLocalidad() + "</td>";
+            html += "<td>";
+            html += "<button type='submit' name='eliminar' value='" + dept.getNumero() + "'>Eliminar</button>";
+            html += "</td>";
+            html += "</tr>";
+        }
+        return html;
     }
 }

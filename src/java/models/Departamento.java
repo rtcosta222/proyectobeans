@@ -36,6 +36,5 @@ public class Departamento {
 
     public void setLocalidad(String localidad) {
         this.localidad = localidad;
-    }
-    
+    }   
 }

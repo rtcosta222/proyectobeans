@@ -27,7 +27,13 @@
         <script src="js/jquery-3.5.1.min.js" type="text/javascript"></script>
         <script>
             $(document).ready(function() {
-                  
+                $("#btn").click(function(event){
+                    if (confirm(“¿Seguro que quiere borrar hospital?")) {
+                    // Go ahead
+                    } else {
+                        e.preventDefault(); // prevents default
+                    }
+                });
             });
         </script>
     </body>
