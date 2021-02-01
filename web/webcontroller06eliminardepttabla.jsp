@@ -22,7 +22,7 @@
         }
     %>
         <h1>Eliminar Dept.</h1>
-        <form>
+        <form method="post" id="formeliminar">
             <table border="1">
                 <thead>
                     <tr>
@@ -41,13 +41,11 @@
             $(document).ready(function(){
                 $("#formeliminar").submit(function() {
                     var respuesta = confirm("Desea eliminar el departamento?");
-                    if (respuesta == true) {
+                    if (respuesta == false) {
                         return false;
-                        terminar
                     }
                 });
-            });
-        </script>            
+            });          
         </script>
                     
     </body>

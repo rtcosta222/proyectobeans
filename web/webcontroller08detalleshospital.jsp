@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="controllerhospital" class="controllers.ControllerHospital" scope="request"/>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +19,26 @@
         <section>
             <main role="main" class="container">
                 <div class="starter-template">
-                    <h1>Acceso Objetos JQuery</h1>
+                    <h1>Detalles de Hospital</h1>
+                <%  String ui = request.getParameter("hospcod");
+                    if (ui != null) {
+                        int z_hospcod = Integer.parseInt(ui);
+                %>      <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Hospital_cod</th>
+                                    <th>Nombre</th>
+                                    <th>Direccion</th>
+                                    <th>Telefono</th>
+                                    <th>Num_Cama</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%=controllerhospital.getTableDetallesHospital(z_hospcod)%>
+                            </tbody>
+                        </table>    
+                <%  }
+                %>  
                 </div>
             </main><!-- /.container -->            
         </section>

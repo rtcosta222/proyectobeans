@@ -58,7 +58,7 @@ public class Controller01Departamentos {
         return html;
     }
         
-        public String getSelectDepartamentos() throws SQLException {
+    public String getSelectDepartamentos() throws SQLException {
         // Query the Repository
         ArrayList<Departamento> lista = repo.getDepartamentos();
         // Process response

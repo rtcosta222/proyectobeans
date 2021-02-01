@@ -77,7 +77,7 @@ public class Repository01Departamentos {
         z_pst.executeUpdate();
         z_conn.close();
     }
-    // Method 5
+    // Method 05
     public void insertarDept(int deptnum, String deptnom, String deptloc) throws SQLException {
         // Get connection and query database
         Connection z_conn = this.getConnection();
@@ -89,7 +89,7 @@ public class Repository01Departamentos {
         z_pst.executeUpdate();
         z_conn.close();
     }
-    // Method 6
+    // Method 06
     public void modificarDept(int deptnum, String deptnom, String deptloc) throws SQLException {
         // Get connection and query database
         Connection z_conn = this.getConnection();

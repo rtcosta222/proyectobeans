@@ -25,8 +25,7 @@
                         int z_cj_hcod = Integer.parseInt(dato);
                         controllerHospital.eliminarHospital(z_cj_hcod);
                     }
-                %>
-                    <table class="table table-bordered">
+                %>  <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Hospital_cod</th>
@@ -41,6 +40,16 @@
                         </tbody>
                     </table>
                 </div>
+                <script>
+                    $(document).ready(function(){
+                        $("#botoneliminar").click(function() {
+                            var respuesta = confirm("Desea eliminar el hospital?");
+                            if (respuesta == false) {
+                                return false;
+                            }
+                        });
+                    });          
+                </script>
             </main><!-- /.container -->            
         </section>
         <jsp:include page="includes/webfooter.jsp"/>
