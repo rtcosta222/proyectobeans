@@ -7,7 +7,9 @@ package controllers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import models.DetallesHospital;
 import models.Hospital;
+import models.Plantilla;
 import repositories.RepositoryHospital;
 
 /**
@@ -44,12 +46,34 @@ public class ControllerHospital {
             html += "<td>" + h.getH_numcama() + "</td>";
             html += "<td><a class='btn btn-primary' href='webcontroller08detalleshospital.jsp?hospcod=" + h.getH_cod() + "'>Detalles</a>";
             html += "<a class='btn btn-info' href='webcontroller08updatehospital.jsp?hospcod=" + h.getH_cod() + "'>Modificar</a>";
-            html += "<a class='btn btn-danger' href='webcontroller08crudhospital.jsp?eliminar=" + h.getH_cod() + "'>Eliminar</a>";
+            html += "<a class='btn btn-danger' id='btn-eliminarhospital' href='webcontroller08crudhospital.jsp?eliminar=" + h.getH_cod() + "'>Eliminar</a>";
             html += "</td>";
             html += "</tr>";
         }
         return html;
     }
+    // Method 01
+    public String getTablaHospital01() throws SQLException {
+        // Query the Repository
+        ArrayList<Hospital> lista = this.repository.getHospitales();
+        // Process response
+        String html = "";
+        for (Hospital h: lista) {
+            html += "<tr>";
+            html += "<td>" + h.getH_cod() + "</td>";
+            html += "<td>" + h.getH_nombre() + "</td>";
+            html += "<td>" + h.getH_direccion() + "</td>";
+            html += "<td>" + h.getH_telefono() + "</td>";
+            html += "<td>" + h.getH_numcama() + "</td>";
+            html += "<td><a class='btn btn-primary' href='webcontroller09doctoreshospital.jsp?hcdetalles=" + h.getH_cod() + "'>Detalles -</a>";
+            html += "<a class='btn btn-info' href='webcontroller09doctoreshospital.jsp?hcsalario=" + h.getH_cod() + "'>- Incrementar salario</a>";
+            html += "</td>";
+            html += "</tr>";
+        }
+        return html;
+    }
+
+    // Method 02
     public String getDetallesHospital(int hospcod) throws SQLException {
         Hospital z_hospital = this.repository.getDetallesHospital(hospcod);
 
@@ -64,19 +88,30 @@ public class ControllerHospital {
         html += "<input type='number' name='cjhnc' class='form-control' value='" + z_hospital.getH_numcama()+ "' required/><br/></div>";        
         return html;
     }
-    // Método 02
-    public void insertarHospital(int h_cod, String h_nom, String h_dir, String h_tlf, int h_numcama) throws SQLException {
-        this.repository.insertarHospital(h_cod, h_nom, h_dir, h_tlf, h_numcama);
-    }    
+    // Method 02 alternative 01
+    public String getDetallesHospital02(int hospcod) throws SQLException {
+        DetallesHospital z_dethospital = this.repository.getDetallesHospitalAlt02(hospcod);
+        String html = "";
+        html += "<tr>";
+        html += "<td>" + z_dethospital.getNumpersonas() + "</td>";
+        html += "<td>" + z_dethospital.getSumasal() + "</td>";
+        html += "<td>" + z_dethospital.getMediasal() + "</td>";
+        html += "</tr>";
+        return html;
+    }
     // Método 03
+    public void insertarHospital(String h_nom, String h_dir, String h_tlf, int h_numcama) throws SQLException {
+        this.repository.insertarHospitalAlt01(h_nom, h_dir, h_tlf, h_numcama);
+    }    
+    // Método 04
     public void eliminarHospital(int h_cod) throws SQLException {
         this.repository.eliminarHospital(h_cod);
     }  
-    // Método 04
+    // Método 05
     public void modificarHospital(int h_cod, String h_nom, String h_dir, String h_tlf, int h_numcama) throws SQLException {
         this.repository.modificarHospital(h_cod, h_nom, h_dir, h_tlf, h_numcama);
     } 
-    // Method 05
+    // Method 06
     public String getTableDetallesHospital(int hcod) throws SQLException {
         Hospital z_hospital = this.repository.getDetallesHospital(hcod);
         
@@ -86,8 +121,42 @@ public class ControllerHospital {
         html += "<td>" + z_hospital.getH_direccion() + "</td>";
         html += "<td>" + z_hospital.getH_telefono() + "</td>";
         html += "<td>" + z_hospital.getH_numcama() + "</td>";
-        html += "<td>" + z_hospital.getH_numcama()+ "</td>";
         html += "<tr>";
+        return html;
+    }
+    // Method 07
+    public String getDetallesPlantilla(int hcod) throws SQLException {
+        ArrayList<Plantilla> listaPlantilla = this.repository.getDetallesPlantilla(hcod);
+        // Process response
+        String html = "";
+        for (Plantilla p: listaPlantilla) {
+            html += "<tr>";
+            html += "<td>" + p.getApellido() + "</td>";
+            html += "<td>" + p.getSala_cod()+ "</td>";
+            html += "<td>" + p.getFuncion() + "</td>";
+            html += "<td>" + p.getTurno() + "</td>";
+            html += "<td>" + p.getSalario() + "</td>";
+            html += "<tr>";
+        }
+        return html;
+    }
+    // Method 08
+    public void modificarSalarioPlantilla(int z_hospcod, int z_incr) throws SQLException {
+        this.repository.modificarSalarioPlantilla(z_hospcod, z_incr);
+    }
+    // Method 09
+    public String getSalarioPlantilla(int hospcod) throws SQLException {
+        ArrayList<Plantilla> listaPlantilla = this.repository.getDetallesPlantilla(hospcod);
+        String html = "";
+        for (Plantilla p: listaPlantilla) {
+            html += "<tr>";
+            html += "<td>" + p.getApellido() + "</td>";
+//            html += "<td>" + p.getSala_cod()+ "</td>";
+            html += "<td>" + p.getFuncion() + "</td>";
+//            html += "<td>" + p.getTurno() + "</td>";
+            html += "<td>" + p.getSalario() + "</td>";
+            html += "<tr>";
+        }
         return html;
     }
 }

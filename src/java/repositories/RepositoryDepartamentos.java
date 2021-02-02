@@ -19,7 +19,7 @@ import oracle.jdbc.OracleDriver;
  *
  * @author lscar
  */
-public class Repository01Departamentos {
+public class RepositoryDepartamentos {
     // Method 01
     public Connection getConnection() throws SQLException {
         DriverManager.registerDriver(new OracleDriver());
@@ -27,7 +27,7 @@ public class Repository01Departamentos {
         Connection z_conn = DriverManager.getConnection(cadena, "system", "oracle");
         return z_conn;
     }
-    // Methos 02
+    // Method 02
     public ArrayList<Departamento> getDepartamentos() throws SQLException {
         // Get connection and query database
         Connection z_conn = this.getConnection();

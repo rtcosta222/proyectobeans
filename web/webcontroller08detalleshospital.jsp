@@ -36,7 +36,37 @@
                             <tbody>
                                 <%=controllerhospital.getTableDetallesHospital(z_hospcod)%>
                             </tbody>
-                        </table>    
+                        </table>
+                            
+                        <br/><h1>Detalles de Personal</h1>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Personas en plantilla</th>
+                                    <th>Suma salarial</th>
+                                    <th>Media salarial</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%=controllerhospital.getDetallesHospital02(z_hospcod)%>
+                            </tbody>
+                        </table>  
+                            
+                        <br/><h1>Datos de Plantilla</h1>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Apellido</th>
+                                    <th>Sala</th>
+                                    <th>Funcion</th>
+                                    <th>Turno</th>
+                                    <th>Salario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%=controllerhospital.getDetallesPlantilla(z_hospcod)%>
+                            </tbody>
+                        </table>
                 <%  }
                 %>  
                 </div>

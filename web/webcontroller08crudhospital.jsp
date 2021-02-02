@@ -2,6 +2,19 @@
     Document   : webcontroller08crudhospital
     Created on : 29-ene-2021, 19:52:38
     Author     : lscar
+    Supuesto   : Mostrar una tabla de Hospitales utilizando el patrón MVC
+                    Modelos
+                    Controladores
+                    Vistas
+                    Repositorios
+                 Incluir diseño con BootStrap e intentar hacer un CRUD en 
+                 Hospitales, tal y como hicimos en la App de JSP. Hacer una 
+                 página Insertar y, cuando insertemos, lo llevamos de nuevo a la 
+                 página de Tabla. Y, en la página insertar, no pedimos el ID del 
+                 hospital, recuperamos el Maximo ID desde el Repository. Incluir
+                 un constructor para inicializar el objeto Hospital en el 
+                 repositorio.
+                 SCRIPT (NOK).
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -25,7 +38,7 @@
                         int z_cj_hcod = Integer.parseInt(dato);
                         controllerHospital.eliminarHospital(z_cj_hcod);
                     }
-                %>  <table class="table table-bordered">
+                %>  <table border="1" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Hospital_cod</th>
@@ -41,11 +54,11 @@
                     </table>
                 </div>
                 <script>
-                    $(document).ready(function(){
-                        $("#botoneliminar").click(function() {
+                    $(document).ready(function(){ ¡
+                        $("#btn-eliminarhospital").click(function() {
                             var respuesta = confirm("Desea eliminar el hospital?");
                             if (respuesta == false) {
-                                return false;
+                                return true;
                             }
                         });
                     });          

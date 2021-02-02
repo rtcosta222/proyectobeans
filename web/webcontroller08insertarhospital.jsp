@@ -21,10 +21,10 @@
                 <div class="starter-template">
                     <h1>Nuevo Hospital</h1><br>
                     <form method="post">
-                        <div
+<!--                        <div
                             <label>Código</label>
                             <input type="number" name="cjhcod" class="form-control" required/>
-                        </div>
+                        </div> -->
                         <div>
                             <label>Nombre</label>
                             <input type="text" name="cjhnom" class="form-control" required/>
@@ -47,17 +47,17 @@
                         </div>
                     </form>
 
-                <%  String cjhc = request.getParameter("cjhcod");
-                    if (cjhc != null) {
-                        int hcod =Integer.parseInt(cjhc);
-                        String hnom = request.getParameter("cjhnom");
+                <%  String hnom = request.getParameter("cjhnom");
+                    if (hnom != null) {
+//                        int hcod =Integer.parseInt(cjhc);
+//                        String hnom = request.getParameter("cjhnom");
                         String hdir = request.getParameter("cjhdir");
                         String htlf = request.getParameter("cjhtlf");
-                        String cjnc = request.getParameter("cjhnc");
-                        int hnc = Integer.parseInt(cjnc);
-                        controllerhospital.insertarHospital(hcod, hnom, hdir, htlf, hnc);
+                        String hnumcama = request.getParameter("cjhnc");
+                        int hnc = Integer.parseInt(hnumcama);
+                        controllerhospital.insertarHospital(hnom, hdir, htlf, hnc);
                     }
-                    if (cjhc != null) {
+                    if (hnom != null) {
                 %>      <jsp:forward page="webcontroller08crudhospital.jsp"/>
                 <%  }                    
                 %>

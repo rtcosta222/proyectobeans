@@ -8,23 +8,23 @@ package controllers;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import models.Departamento;
-import repositories.Repository01Departamentos;
+import repositories.RepositoryDepartamentos;
 
 /**
  *
  * @author lscar
  */
-public class Controller01Departamentos {
+public class ControllerDepartamentos {
     // Atributos
     // The next instruction is equivalent to:
-    //  <jsp:useBean id="repo" class="Repository01Departamentos" .../>
-    //  It is an object "repo" of class "Repository01Departamentos"
-    Repository01Departamentos repo;
+    //  <jsp:useBean id="repo" class="RepositoryDepartamentos" .../>
+    //  It is an object "repo" of class "RepositoryDepartamentos"
+    RepositoryDepartamentos repo;
     
     // Métodos
     //  Constructor
-    public Controller01Departamentos() {
-        this.repo = new Repository01Departamentos();
+    public ControllerDepartamentos() {
+        this.repo = new RepositoryDepartamentos();
     }
     
     public String getTablaDepartamentos() throws SQLException {
