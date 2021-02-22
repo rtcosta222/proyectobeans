@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="controllerdepartamentos" class="controllers.Controller01Departamentos" scope="request"/>
+<jsp:useBean id="controllerdepartamentos" class="controllers.ControllerDepartamentos" scope="request"/>
 
 <!DOCTYPE html>
 <html>

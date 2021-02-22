@@ -7,7 +7,9 @@ package controllers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import models.DetallesHospital;
+import models.Doctor;
 import models.Hospital;
 import models.Plantilla;
 import repositories.RepositoryHospital;
@@ -25,11 +27,17 @@ import repositories.RepositoryHospital;
  */
 
 public class ControllerHospital {
-    // Attributo
+    // Attributos
     RepositoryHospital repository;
+    private HttpSession session;
+
     // Constructor. Cuidado void no va en los constructors.
     public ControllerHospital () {
         this.repository = new RepositoryHospital();
+    }
+
+    public void setSession(HttpSession session) {
+        this.session = session;
     }
     // Method 01
     public String getTablaHospital() throws SQLException {
@@ -141,8 +149,11 @@ public class ControllerHospital {
         return html;
     }
     // Method 08
-    public void modificarSalarioPlantilla(int z_hospcod, int z_incr) throws SQLException {
-        this.repository.modificarSalarioPlantilla(z_hospcod, z_incr);
+    public String modificarSalarioPlantilla(int z_hospcod, int z_incr) throws SQLException {
+        int z_numreg = this.repository.modificarSalarioPlantilla(z_hospcod, z_incr);
+        String html = "";
+        html += "<p style='color:red'>Registros modificados:" + z_numreg + "</p>";
+        return html;
     }
     // Method 09
     public String getSalarioPlantilla(int hospcod) throws SQLException {
@@ -159,4 +170,92 @@ public class ControllerHospital {
         }
         return html;
     }
+    
+        public String getFilasDoctores() throws SQLException {
+        ArrayList<Doctor> doctores = this.repository.getDoctores();
+        String html = "";
+        for (Doctor doc : doctores) {
+            html += "<tr>";
+            html += "<td>" + doc.getApellido() + "</td>";
+            html += "<td>" + doc.getEspecialidad() + "</td>";
+            html += "<td>" + doc.getSalario() + "</td>";
+            html += "<td>" + doc.getIdHospital() + "</td>";
+            html += "<td>";
+            html += "<a href='webcontroller10almacenardoctoressessionv1.jsp?iddoctor=";
+            html += doc.getIdDoctor() + "'>Almacenar</a>";
+            html += "</td>";
+            html += "</tr>";
+        }
+        return html;
+    }
+
+    public String getFilasDoctoresv2() throws SQLException {
+        ArrayList<Doctor> doctores = this.repository.getDoctores();
+        String html = "";
+        for (Doctor doc : doctores) {
+            html += "<tr>";
+            html += "<td>" + doc.getApellido() + "</td>";
+            html += "<td>" + doc.getEspecialidad() + "</td>";
+            html += "<td>" + doc.getSalario() + "</td>";
+            html += "<td>" + doc.getIdHospital() + "</td>";
+            html += "<td>";
+            html += "<a href='webcontroller10almacenardoctoressessionv2.jsp?iddoctor=";
+            html += doc.getIdDoctor() + "'>Almacenar</a>";
+            html += "</td>";
+            html += "</tr>";
+        }
+        return html;
+    }
+
+    public String getDoctoresSession(ArrayList<String> codigos) throws SQLException {
+        if (codigos.size() == 0) {
+            //NO TENEMOS NADA ALMACENADO
+            return "NO EXISTEN DOCTORES";
+        }
+        ArrayList<Doctor> doctores = this.repository.getDoctoresHospital(codigos);
+        String html = "";
+        for (Doctor doc : doctores) {
+            html += "<tr>";
+            html += "<td>" + doc.getApellido() + "</td>";
+            html += "<td>" + doc.getEspecialidad() + "</td>";
+            html += "<td>" + doc.getSalario() + "</td>";
+            html += "</tr>";
+        }
+        return html;
+    }
+
+    public void almacenarDoctorSession(String iddoctor) {
+        //MANEJAMOS LA SESSION MANUALMENTE
+        ArrayList<String> codigos;
+        //PREGUNTAMOS SI EXISTE ALGO EN SESSION
+        if (session.getAttribute("DOCTORES") == null) {
+            codigos = new ArrayList<>();
+        } else {
+            codigos = (ArrayList) session.getAttribute("DOCTORES");
+        }
+        //AÑADIMOS EL NUEVO DOCTOR A LA SESSION
+        codigos.add(iddoctor);
+        //ALMACENAMOS EL NUEVO VALOR DE SESSION
+        session.setAttribute("DOCTORES", codigos);
+    }
+
+    public String getDoctoresSession()
+            throws SQLException {
+        //PREGUNTAMOS SI TENEMOS DATOS EN SESSION
+        if (session.getAttribute("DOCTORES") == null) {
+            //NO TENEMOS NADA ALMACENADO
+            return "";
+        }
+        ArrayList<String> codigos = (ArrayList) session.getAttribute("DOCTORES");
+        ArrayList<Doctor> doctores = this.repository.getDoctoresHospital(codigos);
+        String html = "";
+        for (Doctor doc : doctores) {
+            html += "<tr>";
+            html += "<td>" + doc.getApellido() + "</td>";
+            html += "<td>" + doc.getEspecialidad() + "</td>";
+            html += "<td>" + doc.getSalario() + "</td>";
+            html += "</tr>";
+        }
+        return html;
+    }    
 }

@@ -17,8 +17,8 @@ begin
    insert into hospital values (v_maximo, p_nombre, p_direccion, p_telefono, p_camas);
    commit;
 end;
-
-/* PLSQL procedure, alternative 02:
+____________________________________________________________________
+PLSQL procedure, alternative 02:
 create or replace procedure pr_detalleshospital (
 p_hospitalcod in hospital.hospital_cod%type,
 p_personas out int,
@@ -26,13 +26,15 @@ p_suma out int,
 p_media out int)
 as
 begin
-    select count(doctor_no),sum(salario), avg(salario)
-    into p_personas, p_suma, p_media from doctor
+    select count(empleado_no),sum(salario), avg(salario)
+    into p_personas, p_suma, p_media from plantilla
     where hospital_cod=p_hospitalcod;
 end;
-
-create or replace procedure pr_incrementarsalarioplantilla (p_hospcod hospital.hospital_cod%type,
-                                                            p_incr int)
+___________________________________________________________________
+PLSQL procedure:
+create or replace procedure pr_incrementarsalarioplantilla 
+                                (p_hospcod hospital.hospital_cod%type,
+                                 p_incr int)
 as
 begin
     update plantilla set salario=salario+p_incr where hospital_cod=p_hospcod;
@@ -49,8 +51,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import models.Departamento;
 import models.DetallesHospital;
+import models.Doctor;
 import models.Hospital;
 import models.Plantilla;
 import oracle.jdbc.OracleDriver;
@@ -190,12 +192,20 @@ public class RepositoryHospital {
         // Process database response: build response to controller.
         ArrayList<Plantilla> listaplantilla = new ArrayList<>();
         while(z_rs.next()) {
-            Plantilla plantilla = new Plantilla();
-            plantilla.setApellido(z_rs.getString("APELLIDO"));
-            plantilla.setSala_cod(z_rs.getInt("SALA_COD"));
-            plantilla.setFuncion(z_rs.getString("FUNCION"));
-            plantilla.setTurno(z_rs.getString("TURNO"));
-            plantilla.setSalario(z_rs.getInt("SALARIO"));
+            Plantilla plantilla = new Plantilla(z_rs.getInt("SALA_COD"), 
+                                                z_rs.getInt("EMPLEADO_NO"), 
+                                                z_rs.getString("APELLIDO"),
+                                                z_rs.getString("FUNCION"),
+                                                z_rs.getString("TURNO"),
+                                                z_rs.getInt("SALARIO"),
+                                                z_rs.getInt("HOSPITAL_COD"));
+// Solución inicial sin Constructor:
+//            Plantilla plantilla = new Plantilla();
+//            plantilla.setApellido(z_rs.getString("APELLIDO"));
+//            plantilla.setSala_cod(z_rs.getInt("SALA_COD"));
+//            plantilla.setFuncion(z_rs.getString("FUNCION"));
+//            plantilla.setTurno(z_rs.getString("TURNO"));
+//            plantilla.setSalario(z_rs.getInt("SALARIO"));
             listaplantilla.add(plantilla);
         }  
         z_rs.close();
@@ -203,13 +213,84 @@ public class RepositoryHospital {
         return listaplantilla;
     }
     
-    public void modificarSalarioPlantilla(int z_hospcod, int z_incr) throws SQLException {
+    public int modificarSalarioPlantilla(int z_hospcod, int z_incr) throws SQLException {
         Connection z_conn = this.getConnection();
+        int z_numregmodified;
         String z_sql = "{call pr_incrementarsalarioplantilla(?,?)}";
-        CallableStatement z_pst = z_conn.prepareCall(z_sql);
-        z_pst.setInt(1, z_hospcod);
-        z_pst.setInt(2, z_incr);
-        z_pst.executeUpdate();
+        CallableStatement z_cst = z_conn.prepareCall(z_sql);
+        z_cst.setInt(1, z_hospcod);
+        z_cst.setInt(2, z_incr);
+        z_cst.executeUpdate();
+        z_numregmodified = z_cst.getUpdateCount();
         z_conn.close();
+        return z_numregmodified;
+    }
+    
+    public ArrayList<Doctor> getDoctores(int idhospital) throws SQLException {
+        Connection cn = this.getConnection();
+        String sql = "select * from doctor where hospital_cod=?";
+        PreparedStatement pst = cn.prepareStatement(sql);
+        pst.setInt(1, idhospital);
+        ResultSet rs = pst.executeQuery();
+        ArrayList<Doctor> lista = new ArrayList<>();
+        while (rs.next()) {
+            int iddoctor = rs.getInt("DOCTOR_NO");
+            String ape = rs.getString("APELLIDO");
+            String espe = rs.getString("ESPECIALIDAD");
+            int sal = rs.getInt("SALARIO");
+            int hospitalcod = rs.getInt("HOSPITAL_COD");
+            Doctor doc = new Doctor(iddoctor, ape, espe, sal, hospitalcod);
+            lista.add(doc);
+        }
+        rs.close();
+        cn.close();
+        return lista;
+    }
+    
+    public ArrayList<Doctor> getDoctores() throws SQLException {
+        Connection cn = this.getConnection();
+        String sql = "select * from doctor";
+        Statement st = cn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+        ArrayList<Doctor> lista = new ArrayList<>();
+        while (rs.next()) {
+            int iddoctor = rs.getInt("DOCTOR_NO");
+            String ape = rs.getString("APELLIDO");
+            String espe = rs.getString("ESPECIALIDAD");
+            int sal = rs.getInt("SALARIO");
+            int hospitalcod = rs.getInt("HOSPITAL_COD");
+            Doctor doc = new Doctor(iddoctor, ape, espe, sal, hospitalcod);
+            lista.add(doc);
+        }
+        rs.close();
+        cn.close();
+        return lista;
+    }
+
+    public ArrayList<Doctor> getDoctoresHospital(ArrayList<String> codigosdoctor) throws SQLException {
+        //CONCATENAMOS TODOS LOS CODIGOS SEPARADOS POR COMAS
+        String datos = "";
+        for (String cod : codigosdoctor) {
+            datos += cod + ",";
+        }
+        int ultimacoma = datos.lastIndexOf(",");
+        datos = datos.substring(0, ultimacoma);
+        Connection cn = this.getConnection();
+        String sql = "select * from doctor where doctor_no in (" + datos + ")";
+        Statement st = cn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+        ArrayList<Doctor> lista = new ArrayList<>();
+        while (rs.next()) {
+            int iddoctor = rs.getInt("DOCTOR_NO");
+            String ape = rs.getString("APELLIDO");
+            String espe = rs.getString("ESPECIALIDAD");
+            int sal = rs.getInt("SALARIO");
+            int hospitalcod = rs.getInt("HOSPITAL_COD");
+            Doctor doc = new Doctor(iddoctor, ape, espe, sal, hospitalcod);
+            lista.add(doc);
+        }
+        rs.close();
+        cn.close();
+        return lista;
     }
 }

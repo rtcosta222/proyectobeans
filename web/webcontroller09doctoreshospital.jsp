@@ -32,7 +32,7 @@
     %>      <form method="get">
                 <input type="hidden" value="<%=z_hospcod%>" name="cjhc"/>
                 <label>Introduzca valor del incremento: </label>
-                <input type="number" name="cjincr"/>
+                <input type="number" name="cjincr" required/>
                 <button type="submit">Incrementar salario</button>
             </form> 
     <%  }
@@ -41,7 +41,7 @@
         if (ui != null) {
             int z_hospcod = Integer.parseInt(ui);
             int z_incr = Integer.parseInt(request.getParameter("cjincr"));
-            controllerhospital.modificarSalarioPlantilla(z_hospcod, z_incr);
+            String z_regnum = controllerhospital.modificarSalarioPlantilla(z_hospcod, z_incr);
     %>      <h2>Plantilla con sueldo incrementado:</h2>
             <table border="1">
                 <thead><tr><th>Apellido</th><th>Función</th><th>Nuevo salario</th></tr></thead>
@@ -49,6 +49,7 @@
                     <%=controllerhospital.getSalarioPlantilla(z_hospcod)%>
                 </tbody>
             </table>
+            <%=z_regnum%>
     <%  }
 
     %>  <h2>Todos los hospitales:</h2>
